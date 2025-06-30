@@ -1265,7 +1265,7 @@ This bar chart compares how strongly related three key numerical features are:
 - **Air Fatalities vs. Ground Fatalities**: Also weak — a deadly crash for passengers doesn’t always result in deaths on the ground.
 
 The closer the bar is to 1 or -1, the stronger the relationship. Values near 0 indicate weak or no correlation.
-
+---
 ## Data-Driven Recommendations
 
 Based on a detailed analysis of air crash records from 1908 to 2023, we provide the following data-backed recommendations to enhance aviation safety and inform policymaking:

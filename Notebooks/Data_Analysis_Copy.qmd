@@ -5,7 +5,6 @@ authors:
   - name: Cynthia IGIHOZO
     affiliation: Junior Data Analysts
   - name: Delphine
-
 date: "2025-06-28"
 format:
   html:
@@ -23,8 +22,6 @@ format:
 jupyter: python3
 ---
 
-
-## Purpose of This Analysis
 
 The purpose of analyzing the Air Crashes dataset from 1908 to 2023 is to uncover patterns, trends, and insights related to aviation incidents over time. This analysis serves several key objectives:
 
@@ -74,6 +71,7 @@ To ensure reproducibility andorganized storage, we programmatically create direc
 These directories will store intermediate and final outputs for reproducibility.
 
 ```{python}
+#| echo: false
 # Get working directory
 current_dir= os.getcwd()
 # Go one directory up to the root directory
@@ -99,11 +97,25 @@ The dataset includes:
 - Operator type
 - Number of people aboard, fatalities (in air and on ground)
 
-```{python}
+::: {.panel-tabset}
+## Output {.active}
+```{python} 
+#| label: Aircrash
+#| tbl-cap: Aircrash Dataset
+
 aircrash_data_filename= os.path.join(processed_dir,"Aircrash_file.csv")
 df= pd.read_csv(aircrash_data_filename, na_values='?', skipinitialspace=True)
 df.head()
 ```
+
+## Code
+
+```{python}
+#| output: false
+aircrash_data_filename= os.path.join(processed_dir,"Aircrash_file.csv")
+df= pd.read_csv(aircrash_data_filename, na_values='?', skipinitialspace=True)
+```
+:::
 
 This cell loads the `Aircrash_file.csv` (presumably the cleaned dataset from your previous notebook) into a pandas DataFrame named `df`.
 - `os.path.join(processed_dir, "Aircrash_file.csv")`: Constructs the full file path to the CSV file located in the `processed` data directory.
@@ -138,7 +150,6 @@ summary_df = pd.DataFrame({
 })
 summary_df
 ```
-
 ### Summary Statistics: Numerical Variables
 
 This section explores the distribution of key numerical variables in the dataset, providing insights into central tendencies, variability, and patterns that may reflect broader operational or socio-economic dynamics.
@@ -154,11 +165,10 @@ Work hours vary from 1 to 99 hours weekly. The **median** is 40, which aligns wi
 
 These numerical patterns provide foundational context for further analysis, especially when exploring correlations with outcomes such as income, employment type, or education level.
 
-
 ```{python}
 #| label: tbl-summary-numerical
 #| tbl-cap: Summary statistics for numerical variables in the dataset, including count, mean, standard deviation, min, and quartile values.
-df.describe()
+df.describe(include='object')
 ```
 
 ### Summary Statistics: Categorical Variables
@@ -166,7 +176,7 @@ df.describe()
 ```{python}
 #| label: tbl-Year-distribution
 #| tbl-cap: Distribution of air crashes per year showing the frequency of incidents recorded annually in the dataset.
-df['Year'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
+df['Year'].value_counts(normalize=True)
 ```
 **Year**  
 The dataset spans from 1908 to 2023, covering over a century of aviation history. The frequency of recorded crashes increases notably after the 1950s, peaking around the 1970s and 1980s — a period of major aviation expansion. Post-2000 shows a gradual decline, likely due to improved technology, safety regulations, and training.
@@ -174,25 +184,23 @@ The dataset spans from 1908 to 2023, covering over a century of aviation history
 ```{python}
 #| label: tbl-Quarter-distribution
 #| tbl-cap: Distribution of air crashes by quarter, showing the proportion of incidents in each three-month period.
-df['Quarter'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
+df['Quarter'].value_counts(normalize=True)
 ```
 **Quarter**  
 Most crashes occur in Q3 (~30%) and Q2 (~27%), aligning with seasonal travel peaks in mid-year months. Q1 and Q4 see slightly fewer incidents, which may be attributed to lower flight volumes or weather-based caution during winter months.
 
-
 ```{python}
 #| label: tbl-Month-distribution
 #| tbl-cap: Distribution of air crashes by month, indicating seasonal patterns in incident occurrence.
-df['Month'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
+df['Month'].value_counts(normalize=True)
 ```
 **Month**  
 July and August collectively account for a significant portion of crashes, each contributing around 9–10% of total incidents. This reflects the high global air traffic during summer holidays. In contrast, February records the fewest crashes, possibly due to fewer travel demands and shorter month duration.
 
-
 ```{python}
 #| label: tbl-Day-distribution
 #| tbl-cap: Distribution of air crashes by day of the month, showing how incidents are spread across calendar days.
-df['Day'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
+df['Day'].value_counts(normalize=True)
 ```
 **Day**  
 Crashes are fairly evenly distributed across days of the month, with minor spikes around the 15th and 31st. This may suggest routine operations rather than specific calendar dates influencing crash frequency.
@@ -201,18 +209,15 @@ Crashes are fairly evenly distributed across days of the month, with minor spike
 ```{python}
 #| label: tbl-Country-distribution
 #| tbl-cap: Distribution of air crashes by country or region, showing the relative frequency of incidents geographically.
-df['Country/Region'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
+df['Country/Region'].value_counts(normalize=True)
 ```
 **Country/Region**  
 The United States has the highest number of recorded incidents by a large margin, followed by Russia, Canada, and Brazil. This is expected due to flight volume and geography. Some countries may appear frequently due to historic underreporting or geopolitical changes (e.g., USSR, Yugoslavia).
 
-
-
 ```{python}
 #| label: tbl-Manufacturer-distribution
 #| tbl-cap: Distribution of air crashes by aircraft manufacturer, highlighting which manufacturers are most represented in the data.
-df['Aircraft Manufacturer'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
-
+df['Aircraft Manufacturer'].value_counts(normalize=True)
 ```
 **Aircraft Manufacturer**  
 The leading aircraft manufacturers involved in incidents are Boeing, Airbus, and McDonnell Douglas. Boeing dominates, especially in the second half of the 20th century, reflecting its market share and fleet presence. Smaller manufacturers such as Tupolev and Antonov appear mainly in regional or military contexts.
@@ -220,8 +225,7 @@ The leading aircraft manufacturers involved in incidents are Boeing, Airbus, and
 ```{python}
 #| label: tbl-Aircraft-distribution
 #| tbl-cap: Frequency distribution of specific aircraft types involved in recorded crashes.
-df['Aircraft'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
-
+df['Aircraft'].value_counts(normalize=True)
 ```
 **Aircraft**  
 Aircraft models such as the Boeing 737, DC-3, and Airbus A320 show high frequency, indicating their widespread use in commercial fleets. Older models like the DC-3 appear more in early decades, while modern jets dominate recent decades.
@@ -229,8 +233,7 @@ Aircraft models such as the Boeing 737, DC-3, and Airbus A320 show high frequenc
 ```{python}
 #| label: tbl-Location-distribution
 #| tbl-cap: Most common crash locations recorded in the dataset, based on normalized frequency.
-df['Location'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
-
+df['Location'].value_counts(normalize=True)
 ```
 **Location**  
 Crash locations are widely distributed but tend to cluster near major airports, mountainous terrain, or regions with harsh weather. Urban peripheries and remote zones often host higher crash records due to navigational or environmental challenges.
@@ -238,29 +241,29 @@ Crash locations are widely distributed but tend to cluster near major airports, 
 ```{python}
 #| label: tbl-Operator-distribution
 #| tbl-cap: Distribution of air crashes by operator, showing which airline or aviation body was involved.
-df['Operator'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
-
+df['Operator'].value_counts(normalize=True)
 ```
+
 **Operator**  
 National carriers like American Airlines, Aeroflot, and Air France have higher incident counts, partially due to their long operational history and large fleet size. Many military and charter operators also appear, though often in localized contexts.
+
 
 ```{python}
 #| label: tbl-GroundFatalities-distribution
 #| tbl-cap: Distribution of ground fatalities caused by air crashes, normalized by frequency.
-df['Sum of Ground'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
-
+df['Sum of Ground'].value_counts(normalize=True)
 ```
+
 ```{python}
 #| label: tbl-AirFatalities-distribution
 #| tbl-cap: Distribution of fatalities among passengers and crew during air crashes, expressed as a proportion.
-df['Sum of Fatalities (air)'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
-
+df['Sum of Fatalities (air)'].value_counts(normalize=True)
 ```
+
 ```{python}
 #| label: tbl-Aboard-distribution
 #| tbl-cap: Distribution of the number of people aboard during incidents, normalized by total counts.
-df['Sum of Aboard'].value_counts(normalize=True).rename_axis('unique values').reset_index(name='proportion')
-
+df['Sum of Aboard'].value_counts(normalize=True)
 ```
 **Onboard and Fatalities Summary**  
 Onboard counts range widely, from small aircraft (less than 10 people) to large commercial jets (over 300). Fatalities generally scale with onboard numbers. A small but notable proportion of crashes result in no fatalities, underscoring the role of crew training and emergency response. Ground fatalities are less frequent but can be catastrophic in urban or airport-adjacent crashes.
@@ -457,6 +460,8 @@ The graph is saved in JPG, PNG, and HTML formats, making it easy to share and em
 To understand the variety of organizations involved in aircraft operations, we use:
 
 ```{python}
+#| echo: false
+#| output: false
 df['Operator'].unique()
 ```
 
@@ -630,11 +635,11 @@ This bar chart highlights the top 10 aircraft types that have caused the highest
 By focusing on fatality counts rather than just crash counts, we better understand which aircraft models have been involved in the deadliest incidents.
 
 ```{python}
-
 fatalities_by_aircraft = df.groupby('Aircraft').agg(
     total_fatalities=('Sum of Fatalities (air)', 'sum'),
     crash_count=('Aircraft', 'size')
 ).reset_index()
+
 
 top_fatal_aircraft = fatalities_by_aircraft.nlargest(10, 'total_fatalities')
 
@@ -1075,6 +1080,8 @@ Understanding the survival rate is another critical aspect of air crash analysis
 ss.
 
 ```{python}
+#| echo: false
+#| output: false
 df['Survivors'] = df['Sum of Aboard'] - df['Sum of Fatalities (air)']
 df['Survival Rate (%)'] = (df['Survivors'] / df['Sum of Aboard']) * 100
 df = df[df['Sum of Aboard'] > 0]
@@ -1083,6 +1090,8 @@ df = df[df['Sum of Aboard'] > 0]
 This cells we started by Summing the column called Sum of Aboard(people who were in plane) and also we find Sum for column called Sum Sum of Fatalities (air) people who dead in plane, so after haviing people who were in Plane and who dead in plane we can find people who surviced in that Aircrash  
 
 ```{python}
+#| echo: false
+#| output: false
 total_aboard = df['Sum of Aboard'].sum()
 total_fatalities = df['Sum of Fatalities (air)'].sum()
 total_survivors = total_aboard - total_fatalities
@@ -1197,7 +1206,6 @@ fig.write_html(os.path.join(results_dir, 'Total Fatalities by Month (1908–2023
 
 These trends suggest that seasonal flight volume and weather conditions may influence the frequency and severity of air incidents.
 
-
 ## Correlation Analysis
 
 Understanding how key numerical features relate to each other helps us detect underlying patterns in the dataset.
@@ -1207,7 +1215,9 @@ The heatmap above displays **Pearson correlation coefficients** between:
 - `Sum of Fatalities (air)`: fatalities in the air
 - `Sum of Ground`: fatalities on the ground
 
+
 ```{python}
+#| scrolled: true
 corr_matrix = df[['Sum of Aboard', 'Sum of Fatalities (air)', 'Sum of Ground']].corr()
 corr_long = corr_matrix.unstack().reset_index()
 corr_long.columns = ['Variable 1', 'Variable 2', 'Correlation']
@@ -1256,6 +1266,7 @@ fig.write_image(os.path.join(results_dir, 'Correlation Between Key Numerical Var
 fig.write_image(os.path.join(results_dir, 'Correlation Between Key Numerical Variables.png'))
 fig.write_html(os.path.join(results_dir, 'Correlation Between Key Numerical Variables.html'))
 ```
+
 ### Correlation Bar Chart
 
 This bar chart compares how strongly related three key numerical features are:
@@ -1306,13 +1317,12 @@ Several records contain missing or vague values, particularly in fields like loc
 - Digitization and centralization of historical and future aviation data.
 - Encouragement of transparent incident disclosures from all airlines.
 
----
 
 These recommendations are directly informed by the patterns and relationships found in the dataset and should serve as a foundation for further safety audits, policymaking, and operational enhancements.
-
 
 ```{python}
 # output_file = os.path.join(processed_dir, 'final_cleaned_data.csv')
 # df.to_csv(output_file, index=False)
 # print(f"CSV file saved to: {output_file}")
 ```
+
