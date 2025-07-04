@@ -1,7 +1,7 @@
-🛫 Aircrash Data Analysis Project
+# Aircrash Data Analysis Project
 This project explores and visualizes global aircraft crash data using Python. It provides insights into crash frequency, fatalities, survival rates, aircraft types, operator breakdowns, and more.
 
-## 📁 Project Structure
+## Project Structure
 
 Aircrash/
 │
@@ -17,7 +17,7 @@ Aircrash/
 │
 └── README.md          # Project overview (this file)
 
-🔍 Key Insights Covered
+### Key Insights Covered
 Crashes over time (yearly trends)
 
 Distribution by continent and region
@@ -32,7 +32,7 @@ Interactive maps of crash locations
 
 Survival rates and crash severity
 
-📊 Tools & Technologies
+### Tools & Technologies
 Python
 
 Pandas & NumPy (data wrangling)
@@ -43,17 +43,17 @@ Ipywidgets (Jupyter-based interactivity)
 
 Geopy / Nominatim (geolocation)
 
-🚀 How to Run
+### How to Run
 Open the Notebooks/ folder in Jupyter Notebook or JupyterLab.
 
 Start with the main analysis notebook (e.g., aircrash_analysis.ipynb).
 
-Make sure required packages are installed:
+#### Make sure required packages are installed:
 
 pip install pandas plotly ipywidgets pycountry pycountry-convert geopy
 Run the cells to explore interactive graphs and insights.
 
-✍️ Notes
+## Notes
 Location names were geocoded using OpenStreetMap. Unknown locations are marked as NaN.
 
 The dataset includes crash info from early 1900s to modern day.
